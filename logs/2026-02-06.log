@@ -1,0 +1,19 @@
+2026-02-06T15:07:30.157+0800	INFO	logger/logger.go:90	/signup	{"状态码": 404, "方法": "GET", "路径": "/signup", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.000000416}
+2026-02-06T15:07:56.486+0800	INFO	logger/logger.go:90	/signup	{"状态码": 200, "方法": "POST", "路径": "/signup", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.000512083}
+2026-02-06T15:27:00.935+0800	INFO	logger/logger.go:90	/signup	{"状态码": 200, "方法": "POST", "路径": "/signup", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.000286708}
+2026-02-06T16:00:00.358+0800	INFO	logger/logger.go:90	/signup	{"状态码": 200, "方法": "POST", "路径": "/signup", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.000222792}
+2026-02-06T16:00:34.890+0800	INFO	logger/logger.go:90	/signup	{"状态码": 200, "方法": "POST", "路径": "/signup", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.000046875}
+2026-02-06T16:01:27.147+0800	INFO	logger/logger.go:90	/signup	{"状态码": 200, "方法": "POST", "路径": "/signup", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.016128417}
+2026-02-06T16:02:21.400+0800	INFO	logger/logger.go:90	/signup	{"状态码": 200, "方法": "POST", "路径": "/signup", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.013952417}
+2026-02-06T16:11:33.167+0800	INFO	logger/logger.go:90	/signup	{"状态码": 200, "方法": "POST", "路径": "/signup", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.016804833}
+2026-02-06T18:35:32.188+0800	INFO	logger/logger.go:97	/signup	{"状态码": 200, "方法": "POST", "路径": "/signup", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.025351583}
+2026-02-06T18:36:19.345+0800	INFO	logger/logger.go:97	/signup	{"状态码": 200, "方法": "POST", "路径": "/signup", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.025402}
+2026-02-06T18:39:35.818+0800	INFO	logger/logger.go:97	/signup	{"状态码": 200, "方法": "POST", "路径": "/signup", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.014223333}
+2026-02-06T18:39:57.608+0800	INFO	logger/logger.go:97	/signup	{"状态码": 200, "方法": "POST", "路径": "/signup", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.023030292}
+2026-02-06T18:52:23.035+0800	INFO	logger/logger.go:97	/login	{"状态码": 200, "方法": "POST", "路径": "/login", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.009686791}
+2026-02-06T18:54:10.078+0800	INFO	logger/logger.go:97	/login	{"状态码": 200, "方法": "POST", "路径": "/login", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.008658667}
+2026-02-06T18:54:19.226+0800	INFO	logger/logger.go:97	/login	{"状态码": 200, "方法": "POST", "路径": "/login", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.014408334}
+2026-02-06T20:16:48.269+0800	INFO	logger/logger.go:97	/login	{"状态码": 200, "方法": "POST", "路径": "/login", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.010691875}
+2026-02-06T21:27:15.095+0800	INFO	logger/logger.go:97	/ping	{"状态码": 200, "方法": "GET", "路径": "/ping", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.000590084}
+2026-02-06T21:27:25.906+0800	INFO	logger/logger.go:97	/ping	{"状态码": 200, "方法": "GET", "路径": "/ping", "查询参数": "", "客户端IP": "::1", "用户代理": "Apifox/1.0.0 (https://apifox.com)", "错误信息": "", "耗时": 0.000070875}
+2026-02-06T22:07:26.956+0800	ERROR	gin_start/main.go:70	监听启动失败	{"error": "listen tcp :9090: bind: address already in use"}

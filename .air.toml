@@ -1,0 +1,24 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+# 1. 使用 entrypoint 代替老的配置（如果你的 main.go 在根目录）
+cmd = "go build -o ./tmp/main main.go"
+# 2. 运行命令：记得带上配置文件参数
+full_bin = "./tmp/main ./conf/config.yaml"
+# 3. 这里的 include_dir 要包含你所有的业务代码文件夹
+include_dir = ["controller", "dao", "logic", "pkg", "routes", "settings", "middlewares", "models", "result"]
+# 4. 这里只排除不含代码的目录
+exclude_dir = ["assets", "tmp", "vendor", "testdata", "logs"]
+include_ext = ["go", "tpl", "tmpl", "html", "yaml", "toml"]
+delay = 1000
+stop_on_error = true
+
+[log]
+time = true
+
+[color]
+main = "magenta"
+watcher = "cyan"
+build = "yellow"
+runner = "green"

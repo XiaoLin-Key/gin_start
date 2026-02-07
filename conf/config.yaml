@@ -1,0 +1,30 @@
+name: "gin_start"
+mode: "dev"
+version: "1.0.0"
+start_time: "2026-02-06"
+machine_id: 1
+port: 9090
+
+auth :
+  jwt_expire: 1000
+
+log:
+  level: "debug"
+  filename: "./logs"
+  max_size: 200
+  max_age: 30
+  max_backups: 3
+
+mysql:
+  host: "172.16.11.128"
+  port: 3306
+  user: "root"
+  password: "123456"
+  dbname: "bluebell"
+
+redis:
+  host: "172.16.11.128"
+  port: 6379
+  password: ""
+  db: 0
+  pool_size: 100
