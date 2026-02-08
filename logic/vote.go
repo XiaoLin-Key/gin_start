@@ -1,6 +1,10 @@
 package logic
 
-import "gin_start/models"
+import (
+	"gin_start/dao/redis"
+	"gin_start/models"
+	"strconv"
+)
 
 //投一票加432分 86400/200
 
@@ -22,9 +26,5 @@ direction =0,两种情况：
 */
 
 func VoteForPost(userID int64, p *models.ParamVoteData) (err error) {
-	//判断投票的限制
-
-	//更新分数
-
-	//记录用户为该帖子投票的数据
+	return redis.VoteForPost(strconv.Itoa(int(userID)), p.PostID, float64(p.Direction))
 }

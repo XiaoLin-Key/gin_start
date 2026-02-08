@@ -13,6 +13,17 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+// SignUpHandler 注册接口
+// @Summary      用户注册接口
+// @Description  处理用户注册逻辑，包含用户名、密码校验及重复密码一致性检查
+// @Tags         用户相关
+// @Accept       json
+// @Produce      json
+// @Param        data  body      models.ParamSignUp  true  "注册信息"
+// @Success      200   {object}  result.ResponseData       "注册成功"
+// @Failure      400   {object}  result.ResponseData       "参数错误"
+// @Failure      500   {object}  result.ResponseData       "服务器繁忙"
+// @Router       /signup [post]
 func SignUpHandler(c *gin.Context) {
 	//参数校验
 	p := new(models.ParamSignUp)
@@ -45,6 +56,17 @@ func SignUpHandler(c *gin.Context) {
 	result.ResponseSuccess(c, nil)
 }
 
+// LoginHandler 登录接口
+// @Summary      用户登录接口
+// @Description  用户登录成功后会返回 userID、username 以及用于后续鉴权的 JWT Token
+// @Tags         用户相关
+// @Accept       json
+// @Produce      json
+// @Param        data  body      models.ParamLogin  true  "登录信息"
+// @Success      200   {object}  result.ResponseData{data=models.ParamLoginResponse} "登录成功，返回用户信息及Token"
+// @Failure      400   {object}  result.ResponseData                               "参数错误"
+// @Failure      500   {object}  result.ResponseData                               "服务器繁忙"
+// @Router       /login [post]
 func LoginHandler(c *gin.Context) {
 	//参数校验
 	p := new(models.ParamLogin)

@@ -39,3 +39,15 @@ func GetPostList(page, size int64) (postList []*models.Post, err error) {
 	}
 	return
 }
+func GetPostListByIDs(postIDs []string) (postList []*models.Post, err error) {
+	postList = make([]*models.Post, 0, len(postIDs))
+	sqlStr := "select post_id, author_id, community_id, create_time, title, content from post where post_id in (?) "
+	res := db.Raw(sqlStr, postIDs).Scan(&postList)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+	if res.RowsAffected == 0 {
+		return nil, ErrInvalidID
+	}
+	return
+}

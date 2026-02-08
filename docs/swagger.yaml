@@ -1,0 +1,468 @@
+basePath: /api/v1
+definitions:
+  models.Community:
+    properties:
+      id:
+        description: "\U0001F4A1 重点：GORM 的 Scan 依赖 column 标签来匹配 SQL 结果"
+        type: integer
+      name:
+        type: string
+    type: object
+  models.CommunityDetail:
+    properties:
+      create_time:
+        type: string
+      id:
+        type: integer
+      introduction:
+        type: string
+      name:
+        type: string
+    type: object
+  models.ParamLogin:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  models.ParamLoginResponse:
+    properties:
+      token:
+        type: string
+      user_id:
+        description: string标签防止前端JS丢失大数精度
+        example: "0"
+        type: string
+      username:
+        type: string
+    type: object
+  models.ParamSignUp:
+    properties:
+      password:
+        type: string
+      re_password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - re_password
+    - username
+    type: object
+  models.ParamVoteData:
+    properties:
+      direction:
+        enum:
+        - 1
+        - 0
+        - -1
+        type: integer
+      post_id:
+        type: string
+    required:
+    - direction
+    - post_id
+    type: object
+  models.Post:
+    properties:
+      author_id:
+        type: integer
+      community_id:
+        type: integer
+      content:
+        type: string
+      create_time:
+        type: string
+      id:
+        type: integer
+      status:
+        type: integer
+      title:
+        type: string
+    required:
+    - community_id
+    - content
+    - title
+    type: object
+  models.PostDetailVO:
+    properties:
+      author_id:
+        type: integer
+      author_name:
+        type: string
+      community:
+        $ref: '#/definitions/models.CommunityDetail'
+      community_id:
+        type: integer
+      content:
+        type: string
+      create_time:
+        type: string
+      id:
+        type: integer
+      status:
+        type: integer
+      title:
+        type: string
+      vote_num:
+        type: integer
+    required:
+    - community_id
+    - content
+    - title
+    type: object
+  result.ResCode:
+    enum:
+    - 1000
+    - 1001
+    - 1002
+    - 1003
+    - 1004
+    - 1005
+    - 1006
+    - 1007
+    format: int64
+    type: integer
+    x-enum-varnames:
+    - CodeSuccess
+    - CodeInvalidParam
+    - CodeUserExist
+    - CodeUserNotExist
+    - CodeInvalidPassword
+    - CodeServerBusy
+    - CodeNeedLogin
+    - CodeInvalidAuth
+  result.ResponseData:
+    properties:
+      code:
+        $ref: '#/definitions/result.ResCode'
+      data: {}
+      msg: {}
+    type: object
+host: localhost:9090
+info:
+  contact:
+    name: API Support
+    url: http://www.swagger.io/support
+  description: 这是一个基于 Gin 框架开发的社区后端项目。
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Gin-Start 项目接口文档
+  version: "1.0"
+paths:
+  /community:
+    get:
+      consumes:
+      - application/json
+      description: 查询并返回系统中所有可用的社区信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功返回社区列表
+          schema:
+            allOf:
+            - $ref: '#/definitions/result.ResponseData'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Community'
+                  type: array
+              type: object
+        "500":
+          description: 服务器繁忙
+          schema:
+            $ref: '#/definitions/result.ResponseData'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取所有社区列表
+      tags:
+      - 社区相关
+  /community/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 通过路径参数传入社区 ID，获取该社区的详细信息
+      parameters:
+      - description: 社区ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功返回社区详情
+          schema:
+            allOf:
+            - $ref: '#/definitions/result.ResponseData'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.CommunityDetail'
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/result.ResponseData'
+        "500":
+          description: 服务器繁忙
+          schema:
+            $ref: '#/definitions/result.ResponseData'
+      security:
+      - ApiKeyAuth: []
+      summary: 根据 ID 获取社区详情
+      tags:
+      - 社区相关
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 用户登录成功后会返回 userID、username 以及用于后续鉴权的 JWT Token
+      parameters:
+      - description: 登录信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.ParamLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登录成功，返回用户信息及Token
+          schema:
+            allOf:
+            - $ref: '#/definitions/result.ResponseData'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.ParamLoginResponse'
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/result.ResponseData'
+        "500":
+          description: 服务器繁忙
+          schema:
+            $ref: '#/definitions/result.ResponseData'
+      summary: 用户登录接口
+      tags:
+      - 用户相关
+  /post:
+    post:
+      consumes:
+      - application/json
+      description: 用户登录后可以发布新帖子，包含标题、内容及所属社区
+      parameters:
+      - description: 帖子信息
+        in: body
+        name: post
+        required: true
+        schema:
+          $ref: '#/definitions/models.Post'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/result.ResponseData'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/result.ResponseData'
+        "401":
+          description: 需要登录
+          schema:
+            $ref: '#/definitions/result.ResponseData'
+      security:
+      - ApiKeyAuth: []
+      - ApiKeyAuth: []
+      summary: 创建帖子
+      tags:
+      - 帖子相关
+  /post/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 根据路径中的帖子 ID 查询详细信息
+      parameters:
+      - description: 帖子ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/result.ResponseData'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.PostDetailVO'
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/result.ResponseData'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取帖子详情
+      tags:
+      - 帖子相关
+  /posts:
+    get:
+      consumes:
+      - application/json
+      description: 简单的分页获取帖子列表，按创建时间排序
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/result.ResponseData'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.PostDetailVO'
+                  type: array
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 分页获取帖子列表
+      tags:
+      - 帖子相关
+  /posts2:
+    get:
+      consumes:
+      - application/json
+      description: 支持按照时间或分数（热度）排序分页获取帖子
+      parameters:
+      - in: query
+        name: community_id
+        type: integer
+      - in: query
+        name: order
+        type: string
+      - in: query
+        name: page
+        type: integer
+      - in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/result.ResponseData'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.PostDetailVO'
+                  type: array
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 分页获取帖子列表(可排序)
+      tags:
+      - 帖子相关
+  /signup:
+    post:
+      consumes:
+      - application/json
+      description: 处理用户注册逻辑，包含用户名、密码校验及重复密码一致性检查
+      parameters:
+      - description: 注册信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.ParamSignUp'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 注册成功
+          schema:
+            $ref: '#/definitions/result.ResponseData'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/result.ResponseData'
+        "500":
+          description: 服务器繁忙
+          schema:
+            $ref: '#/definitions/result.ResponseData'
+      summary: 用户注册接口
+      tags:
+      - 用户相关
+  /vote:
+    post:
+      consumes:
+      - application/json
+      description: 用户给帖子投票，支持赞成票(1)、反对票(-1)和取消投票(0)
+      parameters:
+      - description: 投票数据
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.ParamVoteData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 投票成功
+          schema:
+            $ref: '#/definitions/result.ResponseData'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/result.ResponseData'
+        "401":
+          description: 需要登录
+          schema:
+            $ref: '#/definitions/result.ResponseData'
+        "500":
+          description: 服务端繁忙
+          schema:
+            $ref: '#/definitions/result.ResponseData'
+      security:
+      - ApiKeyAuth: []
+      - ApiKeyAuth: []
+      summary: 帖子投票
+      tags:
+      - 投票相关
+securityDefinitions:
+  ApiKeyAuth:
+    description: '输入格式: Bearer <your_token>  (注意中间有空格)'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

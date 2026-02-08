@@ -6,7 +6,10 @@ import (
 	"gin_start/middlewares"
 	"net/http"
 
+	_ "gin_start/docs"
 	"github.com/gin-gonic/gin"
+	"github.com/swaggo/files"
+	"github.com/swaggo/gin-swagger"
 )
 
 func SetUpRouter(mode string) *gin.Engine {
@@ -15,6 +18,8 @@ func SetUpRouter(mode string) *gin.Engine {
 	}
 	r := gin.New()
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	v1 := r.Group("/api/v1")
 	//注册业务
@@ -31,7 +36,8 @@ func SetUpRouter(mode string) *gin.Engine {
 
 		v1.POST("/post", controller.CreatePostHandler)
 		v1.GET("/post/:id", controller.GetPostDetailHandler)
-		v1.GET("/posts/", controller.GetPostListHandler)
+		v1.GET("/posts", controller.GetPostListHandler)
+		v1.GET("/posts2", controller.GetPostListHandler2)
 
 		v1.POST("/vote", controller.PostVoteHandler)
 	}

@@ -1,0 +1,742 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "这是一个基于 Gin 框架开发的社区后端项目。",
+        "title": "Gin-Start 项目接口文档",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:9090",
+    "basePath": "/api/v1",
+    "paths": {
+        "/community": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "查询并返回系统中所有可用的社区信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "社区相关"
+                ],
+                "summary": "获取所有社区列表",
+                "responses": {
+                    "200": {
+                        "description": "成功返回社区列表",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/result.ResponseData"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Community"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "服务器繁忙",
+                        "schema": {
+                            "$ref": "#/definitions/result.ResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/community/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "通过路径参数传入社区 ID，获取该社区的详细信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "社区相关"
+                ],
+                "summary": "根据 ID 获取社区详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "社区ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功返回社区详情",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/result.ResponseData"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.CommunityDetail"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/result.ResponseData"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器繁忙",
+                        "schema": {
+                            "$ref": "#/definitions/result.ResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "description": "用户登录成功后会返回 userID、username 以及用于后续鉴权的 JWT Token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关"
+                ],
+                "summary": "用户登录接口",
+                "parameters": [
+                    {
+                        "description": "登录信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ParamLogin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "登录成功，返回用户信息及Token",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/result.ResponseData"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.ParamLoginResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/result.ResponseData"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器繁忙",
+                        "schema": {
+                            "$ref": "#/definitions/result.ResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/post": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "用户登录后可以发布新帖子，包含标题、内容及所属社区",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "帖子相关"
+                ],
+                "summary": "创建帖子",
+                "parameters": [
+                    {
+                        "description": "帖子信息",
+                        "name": "post",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Post"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/result.ResponseData"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/result.ResponseData"
+                        }
+                    },
+                    "401": {
+                        "description": "需要登录",
+                        "schema": {
+                            "$ref": "#/definitions/result.ResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/post/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "根据路径中的帖子 ID 查询详细信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "帖子相关"
+                ],
+                "summary": "获取帖子详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "帖子ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/result.ResponseData"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.PostDetailVO"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/result.ResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/posts": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "简单的分页获取帖子列表，按创建时间排序",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "帖子相关"
+                ],
+                "summary": "分页获取帖子列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页数量",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/result.ResponseData"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.PostDetailVO"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/posts2": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "支持按照时间或分数（热度）排序分页获取帖子",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "帖子相关"
+                ],
+                "summary": "分页获取帖子列表(可排序)",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "community_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/result.ResponseData"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.PostDetailVO"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/signup": {
+            "post": {
+                "description": "处理用户注册逻辑，包含用户名、密码校验及重复密码一致性检查",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关"
+                ],
+                "summary": "用户注册接口",
+                "parameters": [
+                    {
+                        "description": "注册信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ParamSignUp"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "注册成功",
+                        "schema": {
+                            "$ref": "#/definitions/result.ResponseData"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/result.ResponseData"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器繁忙",
+                        "schema": {
+                            "$ref": "#/definitions/result.ResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/vote": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "用户给帖子投票，支持赞成票(1)、反对票(-1)和取消投票(0)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "投票相关"
+                ],
+                "summary": "帖子投票",
+                "parameters": [
+                    {
+                        "description": "投票数据",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ParamVoteData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "投票成功",
+                        "schema": {
+                            "$ref": "#/definitions/result.ResponseData"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/result.ResponseData"
+                        }
+                    },
+                    "401": {
+                        "description": "需要登录",
+                        "schema": {
+                            "$ref": "#/definitions/result.ResponseData"
+                        }
+                    },
+                    "500": {
+                        "description": "服务端繁忙",
+                        "schema": {
+                            "$ref": "#/definitions/result.ResponseData"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Community": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "💡 重点：GORM 的 Scan 依赖 column 标签来匹配 SQL 结果",
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CommunityDetail": {
+            "type": "object",
+            "properties": {
+                "create_time": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "introduction": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ParamLogin": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ParamLoginResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "string标签防止前端JS丢失大数精度",
+                    "type": "string",
+                    "example": "0"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ParamSignUp": {
+            "type": "object",
+            "required": [
+                "password",
+                "re_password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "re_password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ParamVoteData": {
+            "type": "object",
+            "required": [
+                "direction",
+                "post_id"
+            ],
+            "properties": {
+                "direction": {
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        0,
+                        -1
+                    ]
+                },
+                "post_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Post": {
+            "type": "object",
+            "required": [
+                "community_id",
+                "content",
+                "title"
+            ],
+            "properties": {
+                "author_id": {
+                    "type": "integer"
+                },
+                "community_id": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "create_time": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.PostDetailVO": {
+            "type": "object",
+            "required": [
+                "community_id",
+                "content",
+                "title"
+            ],
+            "properties": {
+                "author_id": {
+                    "type": "integer"
+                },
+                "author_name": {
+                    "type": "string"
+                },
+                "community": {
+                    "$ref": "#/definitions/models.CommunityDetail"
+                },
+                "community_id": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "create_time": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "vote_num": {
+                    "type": "integer"
+                }
+            }
+        },
+        "result.ResCode": {
+            "type": "integer",
+            "format": "int64",
+            "enum": [
+                1000,
+                1001,
+                1002,
+                1003,
+                1004,
+                1005,
+                1006,
+                1007
+            ],
+            "x-enum-varnames": [
+                "CodeSuccess",
+                "CodeInvalidParam",
+                "CodeUserExist",
+                "CodeUserNotExist",
+                "CodeInvalidPassword",
+                "CodeServerBusy",
+                "CodeNeedLogin",
+                "CodeInvalidAuth"
+            ]
+        },
+        "result.ResponseData": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "$ref": "#/definitions/result.ResCode"
+                },
+                "data": {},
+                "msg": {}
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "description": "输入格式: Bearer \u003cyour_token\u003e  (注意中间有空格)",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

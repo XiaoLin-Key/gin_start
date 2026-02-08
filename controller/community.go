@@ -10,6 +10,16 @@ import (
 	"go.uber.org/zap"
 )
 
+// CommunityHandler 社区列表接口
+// @Security ApiKeyAuth
+// @Summary      获取所有社区列表
+// @Description  查询并返回系统中所有可用的社区信息
+// @Tags         社区相关
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  result.ResponseData{data=[]models.Community}  "成功返回社区列表"
+// @Failure      500  {object}  result.ResponseData                          "服务器繁忙"
+// @Router       /community [get]
 func CommunityHandler(c *gin.Context) {
 	//查询到所有社区
 	data, err := logic.GetCommunityList()
@@ -21,6 +31,18 @@ func CommunityHandler(c *gin.Context) {
 	result.ResponseSuccess(c, data)
 }
 
+// CommunityDetailHandler 社区详情接口
+// @Security ApiKeyAuth
+// @Summary      根据 ID 获取社区详情
+// @Description  通过路径参数传入社区 ID，获取该社区的详细信息
+// @Tags         社区相关
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int64  true  "社区ID"
+// @Success      200  {object}  result.ResponseData{data=models.CommunityDetail} "成功返回社区详情"
+// @Failure      400  {object}  result.ResponseData                             "参数错误"
+// @Failure      500  {object}  result.ResponseData                             "服务器繁忙"
+// @Router       /community/{id} [get]
 func CommunityDetailHandler(c *gin.Context) {
 	//获取社区id
 	idStr := c.Param("id")

@@ -20,6 +20,24 @@ import (
 	"go.uber.org/zap"
 )
 
+// @title           Gin-Start 项目接口文档
+// @version         1.0
+// @description     这是一个基于 Gin 框架开发的社区后端项目。
+// @termsOfService  http://swagger.io/terms/
+
+// @contact.name   API Support
+// @contact.url    http://www.swagger.io/support
+
+// @license.name  Apache 2.0
+// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host      localhost:9090
+// @BasePath  /api/v1
+
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
+// @description 输入格式: Bearer <your_token>  (注意中间有空格)
 func main() {
 	// 1. 初始化各组件 (Viper, Logger, MySQL, Redis,Snowflake)
 	if err := initAll(); err != nil {
